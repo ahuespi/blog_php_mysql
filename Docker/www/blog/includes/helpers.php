@@ -1,17 +1,29 @@
 <?php
 
-function mostrarErrores($errores,$campo){
+// FUNCIONES REUTILIZABLES
+
+function mostrarErrores($errores, $campo)
+{
     $alerta = '';
     if (isset($errores[$campo]) && !empty($campo)) {
-        $alerta = '<div class="alerta alerta-error">'.$errores[$campo].'</div>';
+        $alerta = '<div class="alerta alerta-error">' . $errores[$campo] . '</div>';
     }
 
     return $alerta;
 }
 
-function borrarErrores() {
-    $_SESSION['errores'] = null;
-    $borrado = session_unset();
+function borrarErrores()
+{
+    $borrado = false;
+
+    if (isset($_SESSION['errores'])) {
+        $_SESSION['errores'] = null;
+        $borrado = session_unset();
+    }
+    if (isset($_SESSION['completado'])) {
+        $_SESSION['completado'] = null;
+        session_unset();
+    }
 
     return $borrado;
 }
