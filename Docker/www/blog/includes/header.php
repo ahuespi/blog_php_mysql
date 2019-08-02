@@ -16,7 +16,7 @@
     <header id="cabecera">
         <div id="logo">
             <a href="index.php">
-                <h1>Blog de VideoJuegos</h1>
+                <h1>.</h1>
             </a>
         </div>
 

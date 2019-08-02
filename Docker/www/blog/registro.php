@@ -2,11 +2,18 @@
 # CONEXION A DB
 if (isset($_POST)) {
     require_once 'includes/conexion.php';
-    session_start();
-    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
-    $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
-    $email = isset($_POST['email']) ? $_POST['email'] : false;
-    $password = isset($_POST['password']) ? $_POST['password'] : false;
+
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    # MYSQLI_REAL_ESCAPE_STRING (CUANDO LE PASAS UN STRING con caracteres lo convierte a string)
+    # Si intentas meter datos comillas o lo que sea para romper la seguridad de la consulta que estas haciendo, le das seguridad escapando los datos.
+
+    $nombre = isset($_POST['nombre']) ? mysqli_real_escape_string($db, $_POST['nombre']) : false;
+    $apellidos = isset($_POST['apellidos']) ? mysqli_real_escape_string($db, $_POST['apellidos']) : false;
+    $email = isset($_POST['email']) ? mysqli_real_escape_string($db, trim($_POST['email'])) : false;
+    $password = isset($_POST['password']) ? mysqli_real_escape_string($db, $_POST['password']) : false;
 
     $errores = array();
 
@@ -28,22 +35,33 @@ if (isset($_POST)) {
 
     // VALIDAR EMAIL
     if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $email_validado = true;
+        $searchEmail = "SELECT * from usuarios WHERE email='$email'";
+        $data = mysqli_query($db, $searchEmail);
+        $row = mysqli_num_rows($data);
+        if ($row == 1) {
+            $email_validado = false;
+            $errores['email'] = 'El email ya existe';
+        } else {
+            $email_validado = true;
+        }
     } else {
         $email_validado = false;
         $errores['email'] = 'El email no es valido';
     }
+
     // VALIDAR CONTRASEÑA
-    if (!empty($password) && preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $password)) {
+    if (!empty($password) && preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,15}$/', $password)) {
         $password_validado = true;
-    } else {
+    } else if ( empty($password) ) {
+        $errores['password'] = 'La contraseña esta vacia';
+    } else {     
         $password_validado = false;
         $errores['password'] = '* Puede contener letras y números <br/>
             * Debe contener al menos 1 número y 1 letra <br/>
-            * Puede contener cualquiera de estos caracteres !@#$% <br/>
-            * Debe tener 8-12 caracteres <br/>
-        ';
+            * Debe contener al menos un caracter @#\-_$%^&+=§!<br/>
+            * Debe tener 8-15 caracteres <br/>';
     }
+
     // VALIDO QUE NO HAYA ERRORES PARA NO TENER INFORMACION INNECESARIA EN LA BASE DE DATOS
     $guardar_usuario = false;
     if (count($errores) == 0) {
