@@ -24,17 +24,16 @@ if(isset($_POST)){
         if($verify){
             // sesion para guardar los datos del usuario logeado
             $_SESSION['usuario'] = $usuario;
+            if (isset($_SESSION['error_login'])) {
+                session_unset($_SESSION['error_login']);
+            }
+
+        } else {
+            $_SESSION['error_login'] = 'Login Incorrecto!';
         }
     } else {
-        // mensaje de error
+        $_SESSION['error_login'] = 'Login Incorrecto!';
     }
-
-    // comprobar la contraseña
-
 }
 
-
-//coprobar que el email y password cohinciden y si cohinciden logear
-
-
-// crear una sesion con el fallo
+header('Location: index.php');
