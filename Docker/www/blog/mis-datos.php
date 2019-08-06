@@ -21,11 +21,11 @@
 
     <form action="actualizar-usuario.php" method="post">
         <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" value="<?= $_SESSION['usuario']['nombre']; ?>"/>
+        <input type="text" name="nombre" value="<?= $_SESSION['usuario']['nombre']; ?>" />
         <?php echo isset($_SESSION['errores']) ? mostrarErrores($_SESSION['errores'], 'nombre') : ''; ?>
 
         <label for="apellidos">Apellidos</label>
-        <input type="text" name="apellidos" value="<?= $_SESSION['usuario']['apellidos']; ?>"/>
+        <input type="text" name="apellidos" value="<?= $_SESSION['usuario']['apellidos']; ?>" />
         <?php echo isset($_SESSION['errores']) ? mostrarErrores($_SESSION['errores'], 'apellidos') : ''; ?>
 
         <label for="email">Email</label>

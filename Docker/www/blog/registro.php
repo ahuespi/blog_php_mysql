@@ -52,9 +52,9 @@ if (isset($_POST)) {
     // VALIDAR CONTRASEÑA
     if (!empty($password) && preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,15}$/', $password)) {
         $password_validado = true;
-    } else if ( empty($password) ) {
+    } else if (empty($password)) {
         $errores['password'] = 'La contraseña esta vacia';
-    } else {     
+    } else {
         $password_validado = false;
         $errores['password'] = '* Puede contener letras y números <br/>
             * Debe contener al menos 1 número y 1 letra <br/>

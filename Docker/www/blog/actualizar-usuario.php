@@ -53,15 +53,15 @@ if (isset($_POST)) {
         $isset_user = mysqli_fetch_assoc($isset_email);
         if ($isset_user['id'] == $usuario['id'] || empty($isset_user)) {
             $usuario = $_SESSION['usuario'];
-            $sql = "UPDATE usuarios SET ".
-                "nombre = '$nombre', ".
-                "apellidos = '$apellidos', ".
-                "email = '$email' ".
-                "WHERE id = ".$usuario['id'];
-    
+            $sql = "UPDATE usuarios SET " .
+                "nombre = '$nombre', " .
+                "apellidos = '$apellidos', " .
+                "email = '$email' " .
+                "WHERE id = " . $usuario['id'];
+
             $guardar = mysqli_query($db, $sql);
-    
-    
+
+
             if ($guardar) {
                 $_SESSION['usuario']['nombre'] = $nombre;
                 $_SESSION['usuario']['apellidos'] = $apellidos;

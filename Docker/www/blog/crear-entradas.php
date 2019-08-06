@@ -24,8 +24,8 @@
                 if (!empty($categorias)) :
                     while ($categoria = mysqli_fetch_assoc($categorias)) :    ?>
 
-                    <option value="<?=$categoria['id']?>"><?=$categoria['nombre']?></option>
-                <?php endwhile;
+                        <option value="<?= $categoria['id'] ?>"><?= $categoria['nombre'] ?></option>
+                    <?php endwhile;
                 endif; ?>
 
             </select>
